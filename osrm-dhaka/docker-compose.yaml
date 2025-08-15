@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  osrm:
+    image: osrm/osrm-backend:latest
+    container_name: osrm-dhaka
+    ports:
+      - "5111:5000"
+    volumes:
+      - ./data:/data
+    command: >
+      bash -c "
+        if [ ! -f /data/dhaka.osrm ]; then
+          echo 'Preparing OSRM data for Dhaka...';
+          osrm-extract -p /opt/car.lua /data/dhaka.osm.pbf &&
+          osrm-partition /data/dhaka.osrm &&
+          osrm-customize /data/dhaka.osrm;
+        fi &&
+        osrm-routed --algorithm mld /data/dhaka.osrm
+      "
+  nominatim:
+    image: mediagis/nominatim:4.4
+    container_name: nominatim-dhaka
+    restart: always
+    ports:
+      - "8111:8080"
+    volumes:
+      - ./data/nominatim-data:/var/lib/postgresql/14/main
+      - ./data:/data
+    environment:
+      PBF_PATH: /data/dhaka.osm.pbf
+      NOMINATIM_ADMIN_EMAIL: "admin@example.com"
+    shm_size: 2g

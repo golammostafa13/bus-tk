@@ -1,0 +1,45 @@
+# Keep this .gitignore file
+!.gitignore
+
+# Exclude data directory and its contents
+data/
+data/*
+
+# Exclude large files that shouldn't be in git
+*.pbf
+*.osm
+*.osrm
+*.osrm.*
+*.h3
+
+# Exclude environment files
+.env
+.env.local
+.env.production
+
+# Exclude build artifacts
+bin/
+dist/
+build/
+
+# Exclude logs
+*.log
+logs/
+
+# Exclude temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Exclude IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Exclude Go specific files
+*.exe
+*.test
+*.out
